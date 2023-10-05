@@ -28,4 +28,10 @@ public class Validator {
             throw new IllegalArgumentException();
         }
     }
+
+    public static void validateGameCommand(String command) {
+        if (!command.equals("1") && !command.equals("2")) {
+            throw new IllegalArgumentException();
+        }
+    }
 }
