@@ -12,8 +12,8 @@ public class BaseballGame {
     }
 
     public void run() {
-        List<Integer> computerNumber = computer.generateRandomNumbers();
-        List<Integer> playerNumber = inputView.getPlayerNumber();
-
+        List<Integer> computerNumbers = computer.generateRandomNumbers();
+        List<Integer> playerNumbers = inputView.getPlayerNumber();
+        Hint hint = new HintGenerator(computerNumbers, playerNumbers).getHint();
     }
 }
