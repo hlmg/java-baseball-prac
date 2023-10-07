@@ -7,16 +7,24 @@ public class Baseballs {
     private static final String PLAYER_NUMBER_DELIMITER = "";
 
     public static final int BASEBALLS_LENGTH = 3;
-    private final List<Baseball> balls;
-    public Baseballs(String playerNumber) {
-        balls = new ArrayList<>();
-        convertBalls(playerNumber);
-        validateLength();
-    }
+    private List<Baseball> balls;
 
     public Baseballs(List<Integer> numbers) {
+        validateLength(numbers);
         balls = new ArrayList<>();
         convertBalls(numbers);
+    }
+
+    public Baseballs(String playerNumber) {
+        new Baseballs(convertBaseballNumbers(playerNumber));
+    }
+
+    private List<Integer> convertBaseballNumbers(String playerNumber) {
+        List<Integer> baseballNumbers = new ArrayList<>();
+        for (String baseballNumber : playerNumber.split(PLAYER_NUMBER_DELIMITER)) {
+            baseballNumbers.add(parseInt(baseballNumber));
+        }
+        return baseballNumbers;
     }
 
     private void convertBalls(List<Integer> numbers) {
@@ -31,8 +39,8 @@ public class Baseballs {
         }
     }
 
-    private void validateLength() {
-        if (balls.size() != BASEBALLS_LENGTH) {
+    private void validateLength(List<Integer> numbers) {
+        if (numbers.size() != BASEBALLS_LENGTH) {
             throw new IllegalArgumentException();
         }
     }
