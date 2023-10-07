@@ -7,16 +7,21 @@ public class Baseballs {
     private static final String PLAYER_NUMBER_DELIMITER = "";
 
     public static final int BASEBALLS_LENGTH = 3;
-    private List<Baseball> balls;
+    private final List<Baseball> baseballs;
 
     public Baseballs(List<Integer> numbers) {
-        validateLength(numbers);
-        balls = new ArrayList<>();
-        convertBalls(numbers);
+        baseballs = new ArrayList<>();
+        addToBaseballs(numbers);
     }
 
     public Baseballs(String playerNumber) {
-        new Baseballs(convertBaseballNumbers(playerNumber));
+        baseballs = new ArrayList<>();
+        addToBaseballs(convertBaseballNumbers(playerNumber));
+    }
+
+    private void addToBaseballs(List<Integer> numbers) {
+        validateLength(numbers);
+        convertBalls(numbers);
     }
 
     private List<Integer> convertBaseballNumbers(String playerNumber) {
@@ -29,13 +34,13 @@ public class Baseballs {
 
     private void convertBalls(List<Integer> numbers) {
         for (Integer number : numbers) {
-            balls.add(new Baseball(number));
+            baseballs.add(new Baseball(number));
         }
     }
 
     private void convertBalls(String playerNumber) {
         for (String number : playerNumber.split(PLAYER_NUMBER_DELIMITER)) {
-            balls.add(new Baseball(parseInt(number)));
+            baseballs.add(new Baseball(parseInt(number)));
         }
     }
 
@@ -57,7 +62,7 @@ public class Baseballs {
         int strike = 0;
         List<Baseball> playerBalls = player.getBalls();
         for (int i = 0; i < BASEBALLS_LENGTH; i++) {
-            if (balls.get(i).equals(playerBalls.get(i))) {
+            if (baseballs.get(i).equals(playerBalls.get(i))) {
                 strike++;
             }
         }
@@ -68,7 +73,7 @@ public class Baseballs {
         int ball = 0;
         List<Baseball> playerBalls = player.getBalls();
         for (int i = 0; i < BASEBALLS_LENGTH; i++) {
-            if (!balls.get(i).equals(playerBalls.get(i)) && balls.contains(playerBalls.get(i))) {
+            if (!baseballs.get(i).equals(playerBalls.get(i)) && baseballs.contains(playerBalls.get(i))) {
                 ball++;
             }
         }
@@ -76,6 +81,6 @@ public class Baseballs {
     }
 
     public List<Baseball> getBalls() {
-        return balls;
+        return baseballs;
     }
 }

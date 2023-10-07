@@ -24,14 +24,20 @@ class BaseballsTest {
 
         @Test
         void String_성공() {
-            assertThatNoException()
-                    .isThrownBy(() -> new Baseballs("123"));
+            Baseballs baseballs = new Baseballs("123");
+
+            List<Baseball> balls = baseballs.getBalls();
+
+            assertThat(balls).isEqualTo(List.of(new Baseball(1), new Baseball(2), new Baseball(3)));
         }
 
         @Test
         void List_성공() {
-            assertThatNoException()
-                    .isThrownBy(() -> new Baseballs(List.of(1,2,3)));
+            Baseballs baseballs = new Baseballs(List.of(1, 2, 3));
+
+            List<Baseball> balls = baseballs.getBalls();
+
+            assertThat(balls).isEqualTo(List.of(new Baseball(1), new Baseball(2), new Baseball(3)));
         }
     }
 
