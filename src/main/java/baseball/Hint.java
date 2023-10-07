@@ -11,14 +11,6 @@ public class Hint {
         this.strike = strike;
     }
 
-    public void incrementBall() {
-        ball++;
-    }
-
-    public void incrementStrike() {
-        strike++;
-    }
-
     public int getBall() {
         return ball;
     }

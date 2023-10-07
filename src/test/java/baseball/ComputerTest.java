@@ -13,7 +13,7 @@ class ComputerTest {
     @DisplayName("고유한_숫자_세개를_생성해야_한다")
     @Test
     void generateThreeUniqueNumbers() {
-        Computer computer = new Computer();
+        RandomNumberGenerator computer = new RandomNumberGenerator();
 
         List<Integer> randomNumbers = computer.generateRandomNumbers();
 

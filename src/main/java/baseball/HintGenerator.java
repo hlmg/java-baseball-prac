@@ -1,35 +1,17 @@
 package baseball;
 
-import java.util.List;
-
 public class HintGenerator {
-    private final List<Integer> computerNumbers;
-    private final List<Integer> playerNumbers;
+    private final Baseballs computer;
+    private final Baseballs player;
 
-    public HintGenerator(List<Integer> computerNumbers, List<Integer> playerNumbers) {
-        this.computerNumbers = computerNumbers;
-        this.playerNumbers = playerNumbers;
+    public HintGenerator(Baseballs computer, Baseballs player) {
+        this.computer = computer;
+        this.player = player;
     }
 
     public Hint getHint() {
-        Hint hint = new Hint(0, 0);
-        for (int i = 0; i < playerNumbers.size(); i++) {
-            if (isSamePosition(i)) {
-                hint.incrementStrike();
-                continue;
-            }
-            if (isInComputer(i)) {
-                hint.incrementBall();
-            }
-        }
-        return hint;
-    }
-
-    private boolean isSamePosition(int i) {
-        return computerNumbers.get(i).equals(playerNumbers.get(i));
-    }
-
-    private boolean isInComputer(int i) {
-        return computerNumbers.contains(playerNumbers.get(i));
+        int ball = computer.getBall(player);
+        int strike = computer.getStrike(player);
+        return new Hint(ball, strike);
     }
 }
