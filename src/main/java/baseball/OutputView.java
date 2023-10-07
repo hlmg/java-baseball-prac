@@ -6,6 +6,7 @@ public class OutputView {
     private static final String BALL = "볼";
     private static final String STRIKE = "스트라이크";
     private static final String NOTHING = "낫싱";
+    public static final String SPACE = " ";
 
     public void printGameStart() {
         System.out.println(GAME_START_MESSAGE);
@@ -25,10 +26,13 @@ public class OutputView {
 
     private void printHint(Hint hint) {
         StringBuilder sb = new StringBuilder();
-        if (hint.getBall() > 0) {
+        if (hint.getBall() > 0 && hint.getStrike() > 0) {
             sb.append(hint.getBall()).append(BALL);
-        }
-        if (hint.getStrike() > 0) {
+            sb.append(SPACE);
+            sb.append(hint.getStrike()).append(STRIKE);
+        } else if (hint.getBall() > 0) {
+            sb.append(hint.getBall()).append(BALL);
+        } else if (hint.getStrike() > 0) {
             sb.append(hint.getStrike()).append(STRIKE);
         }
         System.out.println(sb);
