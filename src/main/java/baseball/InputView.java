@@ -1,9 +1,6 @@
 package baseball;
 
 import camp.nextstep.edu.missionutils.Console;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class InputView {
     private static final String INPUT_NUMBER_MESSAGE = "숫자를 입력해주세요 : ";
@@ -14,10 +11,8 @@ public class InputView {
         return Console.readLine();
     }
 
-    public int getRetryOrEnd() {
+    public String getRetryOrEnd() {
         System.out.println(RETRY_MESSAGE);
-        String command = Console.readLine();
-        Validator.validateGameCommand(command);
-        return Integer.parseInt(command);
+        return Console.readLine();
     }
 }
