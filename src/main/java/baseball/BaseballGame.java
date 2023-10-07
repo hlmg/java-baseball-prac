@@ -23,7 +23,6 @@ public class BaseballGame {
     private void startNewGame() {
         while(true) {
             List<Integer> computerNumbers = computer.generateRandomNumbers();
-            System.out.println(computerNumbers);
             guessPhase(computerNumbers);
             int retryOrEnd = inputView.getRetryOrEnd();
             if (retryOrEnd == END) {
