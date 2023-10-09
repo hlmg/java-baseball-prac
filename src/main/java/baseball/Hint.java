@@ -3,8 +3,8 @@ package baseball;
 import java.util.Objects;
 
 public class Hint {
-    private int ball;
-    private int strike;
+    private final int ball;
+    private final int strike;
 
     public Hint(int ball, int strike) {
         this.ball = ball;

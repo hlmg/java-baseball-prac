@@ -33,9 +33,10 @@ public class BaseballGame {
         while(true) {
             String playerNumber = inputView.getPlayerNumber();
             Baseballs player = new Baseballs(playerNumber);
-            Hint hint = new HintGenerator(computer, player).getHint();
-            outputView.printGameResult(hint);
-            if (hint.getStrike() == ALL_STRIKE) {
+            int ball = computer.getBall(player);
+            int strike = computer.getStrike(player);
+            outputView.printGameResult(new Hint(ball, strike));
+            if (strike == ALL_STRIKE) {
                 outputView.printGameEnd();
                 return;
             }
