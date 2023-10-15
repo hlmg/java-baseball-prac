@@ -3,13 +3,14 @@ package baseball;
 import static baseball.BaseballGame.Status.*;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 public class BaseballGame {
     private static final int ALL_STRIKE = 3;
     private final InputView inputView;
     private final OutputView outputView;
     private Status status;
-    Baseballs computer;
+    private Baseballs computer;
 
     public BaseballGame(InputView inputView, OutputView outputView) {
         this.inputView = inputView;
@@ -18,25 +19,14 @@ public class BaseballGame {
     }
 
     public void run() {
-        outputView.printGameStart();
         while (status != EXIT) {
-            play();
+            status.run(this);
         }
     }
 
-    private void play() {
-        if (status == ENTER) {
-            generateComputer();
-        } else if (status == GAME_START) {
-            guessComputer();
-        } else if (status == GAME_END) {
-            retryOrExit();
-        }
-    }
-
-    private void generateComputer() {
-        List<Integer> generatedRandomNumbers = new RandomNumberGenerator().generateRandomNumbers();
-        computer = new Baseballs(generatedRandomNumbers);
+    private void newGame() {
+        outputView.printGameStart();
+        computer = generateComputer();
         status = GAME_START;
     }
 
@@ -57,11 +47,32 @@ public class BaseballGame {
         if (command == Command.END) {
             status = EXIT;
         } else if (command == Command.RETRY) {
-            status = ENTER;
+            computer = generateComputer();
+            status = GAME_START;
         }
     }
 
+    private Baseballs generateComputer() {
+        List<Integer> generatedRandomNumbers = new RandomNumberGenerator().generateRandomNumbers();
+        return new Baseballs(generatedRandomNumbers);
+    }
+
     public enum Status {
-        ENTER, GAME_START, GAME_END, EXIT
+        ENTER(BaseballGame::newGame),
+        GAME_START(BaseballGame::guessComputer),
+        GAME_END(BaseballGame::retryOrExit),
+        EXIT(unused -> {
+            throw new IllegalStateException();
+        });
+
+        private final Consumer<BaseballGame> consumer;
+
+        Status(Consumer<BaseballGame> consumer) {
+            this.consumer = consumer;
+        }
+
+        public void run(BaseballGame baseballGame) {
+            consumer.accept(baseballGame);
+        }
     }
 }
