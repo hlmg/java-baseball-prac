@@ -3,7 +3,6 @@ package baseball;
 import java.util.Objects;
 
 public class Hint {
-    private static final int ALL_STRIKE = 3;
     private final int ball;
     private final int strike;
 
@@ -18,10 +17,6 @@ public class Hint {
 
     public int getStrike() {
         return strike;
-    }
-
-    public boolean isAllStrike() {
-        return this.strike == ALL_STRIKE;
     }
 
     @Override
