@@ -1,7 +1,5 @@
 package baseball;
 
-import static baseball.BaseballGame.Status.*;
-
 import java.util.List;
 
 public class BaseballGame {
@@ -13,7 +11,7 @@ public class BaseballGame {
     public BaseballGame(InputView inputView, OutputView outputView) {
         this.inputView = inputView;
         this.outputView = outputView;
-        status = PLAY;
+        status = Status.PLAY;
     }
 
     public void run() {
@@ -48,33 +46,5 @@ public class BaseballGame {
     private void retry() {
         Command command = Command.from(inputView.getRetryOrEnd());
         status =  Status.from(command);
-    }
-
-    public enum Status {
-        PLAY,
-        END,
-        EXIT;
-
-        public static Status from(Hint hint) {
-            if (hint.isAllStrike()) {
-                return END;
-            }
-            return PLAY;
-        }
-
-        public static Status from(Command command) {
-            if (command == Command.RETRY) {
-                return PLAY;
-            }
-            return EXIT;
-        }
-
-        public boolean isExit() {
-            return this == EXIT;
-        }
-
-        public boolean isEnd() {
-            return this == END;
-        }
     }
 }
