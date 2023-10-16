@@ -3,6 +3,7 @@ package baseball;
 import java.util.Objects;
 
 public class Hint {
+    private static final int ALL_STRIKE = 3;
     private final int ball;
     private final int strike;
 
@@ -34,5 +35,9 @@ public class Hint {
     @Override
     public int hashCode() {
         return Objects.hash(ball, strike);
+    }
+
+    public boolean isAllStrike() {
+        return strike == ALL_STRIKE;
     }
 }

@@ -3,10 +3,8 @@ package baseball;
 import static baseball.BaseballGame.Status.*;
 
 import java.util.List;
-import java.util.function.Consumer;
 
 public class BaseballGame {
-    private static final int ALL_STRIKE = 3;
     private final InputView inputView;
     private final OutputView outputView;
     private Status status;
@@ -15,40 +13,15 @@ public class BaseballGame {
     public BaseballGame(InputView inputView, OutputView outputView) {
         this.inputView = inputView;
         this.outputView = outputView;
-        status = ENTER;
+        status = PLAY;
     }
 
     public void run() {
-        while (status != EXIT) {
-            status.run(this);
-        }
-    }
-
-    private void newGame() {
         outputView.printGameStart();
-        computer = generateComputer();
-        status = GAME_START;
-    }
-
-    private void guessComputer() {
-        String playerNumber = inputView.getPlayerNumber();
-        Baseballs player = new Baseballs(playerNumber);
-        int ball = computer.getBall(player);
-        int strike = computer.getStrike(player);
-        outputView.printGameResult(new Hint(ball, strike));
-        if (strike == ALL_STRIKE) {
-            outputView.printGameEnd();
-            status = GAME_END;
-        }
-    }
-
-    private void retryOrExit() {
-        Command command = Command.from(inputView.getRetryOrEnd());
-        if (command == Command.END) {
-            status = EXIT;
-        } else if (command == Command.RETRY) {
+        while (!status.isExit()) {
             computer = generateComputer();
-            status = GAME_START;
+            play();
+            retry();
         }
     }
 
@@ -57,22 +30,51 @@ public class BaseballGame {
         return new Baseballs(generatedRandomNumbers);
     }
 
+    private void play() {
+        while (!status.isEnd()) {
+            String playerNumber = inputView.getPlayerNumber();
+            Baseballs player = new Baseballs(playerNumber);
+
+            int strike = computer.getStrike(player);
+            int ball = computer.getStrike(player);
+            Hint hint = new Hint(strike, ball);
+
+            outputView.printGameResult(hint);
+            status = Status.from(hint);
+        }
+        outputView.printGameEnd();
+    }
+
+    private void retry() {
+        Command command = Command.from(inputView.getRetryOrEnd());
+        status =  Status.from(command);
+    }
+
     public enum Status {
-        ENTER(BaseballGame::newGame),
-        GAME_START(BaseballGame::guessComputer),
-        GAME_END(BaseballGame::retryOrExit),
-        EXIT(unused -> {
-            throw new IllegalStateException();
-        });
+        PLAY,
+        END,
+        EXIT;
 
-        private final Consumer<BaseballGame> consumer;
-
-        Status(Consumer<BaseballGame> consumer) {
-            this.consumer = consumer;
+        public static Status from(Hint hint) {
+            if (hint.isAllStrike()) {
+                return END;
+            }
+            return PLAY;
         }
 
-        public void run(BaseballGame baseballGame) {
-            consumer.accept(baseballGame);
+        public static Status from(Command command) {
+            if (command == Command.RETRY) {
+                return PLAY;
+            }
+            return EXIT;
+        }
+
+        public boolean isExit() {
+            return this == EXIT;
+        }
+
+        public boolean isEnd() {
+            return this == END;
         }
     }
 }
